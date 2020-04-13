@@ -7,6 +7,7 @@ import '../css/app.css';
 import Navbar from "./components/Navbar";
 import Homepage from "./pages/HomePage";
 import PeoplePage from "./pages/People";
+import PeoplePageWithPagination from "./pages/PeopleWithPagination";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -19,7 +20,7 @@ const App = () => {
             <Navbar/>
             <main className="container pt-5">
                 <Switch>
-                    <Route path="/people" component={PeoplePage} />
+                    <Route path="/people" component={PeoplePageWithPagination} />
                     <Route path="/" component={Homepage} />
 
                 </Switch>
