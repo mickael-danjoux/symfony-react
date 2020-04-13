@@ -10,12 +10,13 @@ const PeoplePageWithPagination = props => {
     const [totalItems, setTotalItems] = useState(0);
     const [currentPage, setCurrentPage ] = useState(1);
     const [loading, setLoading ] = useState(true);
-    const itemsPerPage = 30;
+    const [itemsPerPage, setItemPerPage ] = useState(10);
+
 
 
     useEffect( () => {
         Axios
-            .get(API_ROUTE + `/people?page=${currentPage}`)
+            .get(API_ROUTE + `/people?page=${currentPage}&&itemsPerPage=${itemsPerPage}`)
             .then(response => {
                 setPeople(response.data["hydra:member"]);
                 setTotalItems(response.data["hydra:totalItems"]);
@@ -23,11 +24,16 @@ const PeoplePageWithPagination = props => {
             })
             .catch(error => console.log(error.response));
 
-    }, [currentPage]);
+    }, [currentPage, itemsPerPage]);
 
     const handlePageChange = page => {
         setLoading(true);
         setCurrentPage(page);
+    };
+
+    const handleItemsPerPageChange = event => {
+        setCurrentPage(1);
+        setItemPerPage(event.currentTarget.value);
     };
 
 
@@ -40,6 +46,14 @@ const PeoplePageWithPagination = props => {
     return (
         <>
             <h1>People List paginated</h1>
+            <div className="col-2">
+                <span>Elements par page :</span>
+                    <select className="form-control" onChange={handleItemsPerPageChange} value={itemsPerPage}>
+                        <option value="10">10</option>
+                        <option value="30">30</option>
+                        <option value="50">50</option>
+                    </select>
+            </div>
 
             <table className="table table-hover">
                 <thead>
@@ -75,12 +89,16 @@ const PeoplePageWithPagination = props => {
 
                 </tbody>
             </table>
-            <Pagination
-                currentPage={currentPage}
-                itemsPerPage={itemsPerPage}
-                length={totalItems}
-                onPageChanged={handlePageChange}
-            />
+
+            { itemsPerPage < totalItems && (
+                <Pagination
+                    currentPage={currentPage}
+                    itemsPerPage={itemsPerPage}
+                    length={totalItems}
+                    onPageChanged={handlePageChange}
+                />
+            )}
+
 
         </>
     );
