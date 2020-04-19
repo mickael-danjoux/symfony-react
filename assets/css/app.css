@@ -1,5 +1,7 @@
 @import '~font-awesome';
 
+
+/*****   DATA TABLE  ******/
 .sorting,
 .sorting_asc,
 .sorting_desc,
@@ -20,4 +22,12 @@
 .sorting_desc{
     background-image: url('../images/sort_desc.png');
 }
+/****    END BLOCK  ****/
 
+/****    TOASTIFY   ****/
+.Toastify__toast--success {
+    background: rgba(30, 191, 30, 0.98);
+}
+.Toastify__toast-container {
+    margin-top: 7%;
+}

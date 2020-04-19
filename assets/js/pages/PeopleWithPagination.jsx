@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Moment from "react-moment";
 import Pagination from "../components/Pagination";
-import PeopleAPI from "../sevices/PeopleAPI";
 import TableHeader from "../components/TableHeader";
-
+import DefaultAPI from "../sevices/DefaultAPI";
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import {toast} from "react-toastify";
 
 const PeoplePageWithPagination = props => {
 
@@ -17,7 +19,7 @@ const PeoplePageWithPagination = props => {
     // get all people with api request
     const fetchPeople = async () => {
         try {
-            const data = await PeopleAPI.findAll(currentPage, itemsPerPage, orderRequest);
+            const data = await DefaultAPI.findAll('people',currentPage, itemsPerPage, orderRequest);
             setPeople(data["hydra:member"]);
             setTotalItems(data["hydra:totalItems"]);
             setLoading(false);
@@ -50,17 +52,50 @@ const PeoplePageWithPagination = props => {
         itemsPerPage
     );
 
+    const handleDelete = async id => {
+        const MySwal = withReactContent(Swal)
+        MySwal.fire({
+            title: <p>Delete ?</p>,
+            text: 'This action will be irrevocable',
+            icon: 'warning',
+            confirmButtonText: 'ok',
+            showCancelButton: true,
+            cancelButtonText: 'cancel',
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            onOpen: () => {
+
+            }
+        }).then((result) => {
+            if(result.value){
+                const originalPeople = [...people]
+                setPeople( people.filter( people => people.id !== id ) )
+                try {
+                    toast.success("Item deleted")
+                    // await DefaultAPI.delete('people',id);
+                }catch (e) {
+                    setPeople(originalPeople);
+                }
+            }
+        })
+    }
+
+
+
 
     return (
         <>
             <h1>People List paginated</h1>
-            <div className="col-2">
+            <div className="col-2 mb-2">
                 <span>Elements par page :</span>
                 <select className="form-control" onChange={handleItemsPerPageChange} value={itemsPerPage}>
                     <option value="10">10</option>
                     <option value="30">30</option>
                     <option value="50">50</option>
                 </select>
+            </div>
+            <div className="form-group col-5">
+                <input type="text" className="form-control" placeholder="Search"  />
             </div>
 
             <table className="table table-hover dataTable">
@@ -95,7 +130,7 @@ const PeoplePageWithPagination = props => {
                             {person.birthDate}
                         </Moment></td>
                         <td>
-                            <button className="btn btn-sm btn-danger">Supprimer</button>
+                            <button className="btn btn-sm btn-danger" onClick={ () => handleDelete( person.id ) }>Delete</button>
                         </td>
 
 

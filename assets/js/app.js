@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import Homepage from "./pages/HomePage";
 import PeoplePage from "./pages/People";
 import PeoplePageWithPagination from "./pages/PeopleWithPagination";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -25,6 +27,7 @@ const App = () => {
 
                 </Switch>
             </main>
+            <ToastContainer />
         </HashRouter>
     )
 
