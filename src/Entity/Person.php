@@ -2,16 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  * @ApiResource(
  *     attributes={
+ *          "order" = {"lastName" : "ASC", "firstName" : "ASC"}
  *     }
  * )
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *          "firstName" : "partial",
+ *          "lastName" : "partial"
+ *     },
+ * )
+ * @ApiFilter(OrderFilter::class)
+ *
+ *
  */
 class Person
 {
@@ -41,6 +55,8 @@ class Person
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $gender;
+
+
 
     public function getId(): ?int
     {
