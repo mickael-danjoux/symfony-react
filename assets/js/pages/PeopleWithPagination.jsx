@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Moment from "react-moment";
 import Pagination from "../components/Pagination";
 import PeopleAPI from "../sevices/PeopleAPI";
+import TableHeader from "../components/TableHeader";
 
 
 const PeoplePageWithPagination = props => {
@@ -42,52 +43,13 @@ const PeoplePageWithPagination = props => {
         setItemPerPage(event.currentTarget.value);
     };
 
-    // data paginator
+    // data paginator not using ajax
     const paginatedPeople = Pagination.getData(
         people,
         currentPage,
         itemsPerPage
     );
 
-
-
-
-     function handleSort(event,name){
-         let order = 'asc'
-
-        let canDoAction = true;
-         const elements = document.querySelectorAll('table.dataTable thead tr th:not(:last-child)')
-         elements.forEach(element=>{
-             if( event.target !== element){
-                 element.classList.remove('sorting_asc')
-                 element.classList.remove('sorting_desc')
-                 element.classList.add('sorting')
-             }
-         })
-         if( canDoAction && event.target.classList.contains('sorting') ){
-             event.target.classList.remove('sorting')
-             event.target.classList.add('sorting_asc')
-             canDoAction = false
-         }
-
-         if( canDoAction && event.target.classList.contains('sorting_asc') ){
-             event.target.classList.remove('sorting_asc')
-             event.target.classList.add('sorting_desc')
-             order = 'desc'
-             canDoAction = false
-         }
-
-         if( canDoAction &&event.target.classList.contains('sorting_desc') ){
-             event.target.classList.remove('sorting_desc')
-             event.target.classList.add('sorting_asc')
-             order = 'asc'
-             canDoAction = false
-         }
-
-        setOrderRequest([{name:name,sort:order}])
-        setCurrentPage(1);
-
-    }
 
     return (
         <>
@@ -103,13 +65,18 @@ const PeoplePageWithPagination = props => {
 
             <table className="table table-hover dataTable">
                 <thead>
-                <tr>
-                    <th className="text-center sorting" onClick={(evt) => handleSort(evt,'lastName')} >Last Name</th>
-                    <th className="text-center sorting" onClick={(evt) => handleSort(evt,'firstName')}>First Name</th>
-                    <th className="text-center sorting" onClick={(evt) => handleSort(evt,'gender')}>Gender</th>
-                    <th className="text-center sorting" onClick={(evt) => handleSort(evt,'birthDate')}>Birth Date</th>
-                    <th/>
-                </tr>
+                    <TableHeader
+                        items={
+                            [
+                                {title: 'Last Name', sortName: 'lastName'},
+                                {title: 'First Name', sortName: 'firstName'},
+                                {title: 'Gender', sortName: 'gender'},
+                                {title: 'Birth Date', sortName: 'birthDate'}
+                            ]
+                        }
+                        setOrderRequest={setOrderRequest}
+                        setCurrentPage={setCurrentPage}
+                    />
                 </thead>
                 <tbody>
                 {loading && (
