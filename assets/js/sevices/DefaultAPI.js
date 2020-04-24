@@ -21,12 +21,26 @@ function findAll(entity, currentPage = null, itemsPerPage = null, orderRequest =
         .then(response => response.data)
 }
 
+function findOne(entity, item){
+    return Axios
+        .get(API_ROUTE + `/${entity}/${item}`)
+        .then(response => response.data)
+}
+
 function deleteItem(entity, id){
     return Axios
         .delete(API_ROUTE + `/${entity}/${id}`)
 }
 
+function postItem(entity, item){
+    return Axios
+        .post(API_ROUTE + `/${entity}`, item)
+        .then(response => response.data)
+}
+
 export default {
     findAll,
-    delete : deleteItem
+    findOne,
+    delete : deleteItem,
+    post : postItem
 }

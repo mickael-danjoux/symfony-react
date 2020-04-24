@@ -16,9 +16,12 @@
     },
     "dependencies": {
         "axios": "^0.19.2",
+        "date-fns": "^2.12.0",
         "font-awesome": "^4.7.0",
         "moment": "^2.24.0",
         "react": "16.8.6",
+        "react-content-loader": "^5.0.4",
+        "react-datepicker": "^2.14.1",
         "react-dom": "16.8.6",
         "react-moment": "^0.9.7",
         "react-router-dom": "5.0.0",

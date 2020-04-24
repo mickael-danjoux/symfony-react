@@ -6,10 +6,11 @@ import { HashRouter, Switch, Route} from "react-router-dom";
 import '../css/app.css';
 import Navbar from "./components/Navbar";
 import Homepage from "./pages/HomePage";
-import PeoplePage from "./pages/People";
-import PeoplePageWithPagination from "./pages/PeopleWithPagination";
+import PeoplePage from "./pages/PeopleListPage";
+import PeoplePageWithPagination from "./pages/PeopleListPage";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import PersonPage from "./pages/Person";
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
 // import $ from 'jquery';
@@ -22,7 +23,8 @@ const App = () => {
             <Navbar/>
             <main className="container pt-5">
                 <Switch>
-                    <Route path="/people" component={PeoplePageWithPagination} />
+                    <Route path="/people/:id" component={PersonPage} />
+                    <Route path="/people" component={PeoplePage} />
                     <Route path="/" component={Homepage} />
 
                 </Switch>

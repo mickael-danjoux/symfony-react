@@ -37,9 +37,9 @@ class AppFixtures extends Fixture
     public function createPeople(int $number){
         for( $i = 0; $i < $number; $i ++ ){
             $person = new Person();
-            $person->setLastName($this->faker->lastName);
-            $person->setGender($this->faker->boolean);
-            $person->setFirstName($this->faker->firstName( $person->getGender()?'male':'female' ));
+            $person->setLastName(strtoupper($this->faker->lastName));
+            $person->setGender($this->faker->boolean?1:2);
+            $person->setFirstName($this->faker->firstName( $person->getGender()==1?'male':'female' ));
 
             $person->setBirthDate($this->faker->dateTimeBetween('-75 years','now'));
             $this->entityManager->persist($person);

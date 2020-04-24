@@ -4,7 +4,7 @@ import Moment from "react-moment";
 import {API_ROUTE} from "../config/api";
 import Pagination from "../components/Pagination";
 
-const PeoplePage = props => {
+const PeoplePage2 = props => {
 
     const [people, setPeople] = useState([]);
     const [currentPage, setCurrentPage ] = useState(1);
@@ -71,4 +71,4 @@ const PeoplePage = props => {
     );
 };
 
-export default PeoplePage;
+export default PeoplePage2;

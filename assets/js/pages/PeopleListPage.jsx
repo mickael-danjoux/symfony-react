@@ -6,8 +6,10 @@ import DefaultAPI from "../sevices/DefaultAPI";
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {toast} from "react-toastify";
+import TableLoader from "../components/loaders/TableLoader";
+import { Link } from "react-router-dom";
 
-const PeoplePageWithPagination = props => {
+const PeoplePage = props => {
 
     const [people, setPeople] = useState([]);
     const [totalItems, setTotalItems] = useState(0);
@@ -30,7 +32,7 @@ const PeoplePageWithPagination = props => {
 
     // get people on component loading
     useEffect(() => {
-        fetchPeople()
+       fetchPeople()
     }, [currentPage, itemsPerPage, orderRequest]);
 
     // manage page changing
@@ -66,15 +68,16 @@ const PeoplePageWithPagination = props => {
             onOpen: () => {
 
             }
-        }).then((result) => {
+        }).then( async (result) => {
             if(result.value){
                 const originalPeople = [...people]
                 setPeople( people.filter( people => people.id !== id ) )
                 try {
                     toast.success("Item deleted")
-                    // await DefaultAPI.delete('people',id);
+                    await DefaultAPI.delete('people',id);
                 }catch (e) {
                     setPeople(originalPeople);
+                    toast.success("An error occurred")
                 }
             }
         })
@@ -85,7 +88,11 @@ const PeoplePageWithPagination = props => {
 
     return (
         <>
-            <h1>People List paginated</h1>
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+                <h1>People List paginated</h1>
+                <Link to="/people/new" className="btn btn-primary">Add a person</Link>
+
+            </div>
             <div className="col-2 mb-2">
                 <span>Elements par page :</span>
                 <select className="form-control" onChange={handleItemsPerPageChange} value={itemsPerPage}>
@@ -106,31 +113,28 @@ const PeoplePageWithPagination = props => {
                                 {title: 'Last Name', sortName: 'lastName'},
                                 {title: 'First Name', sortName: 'firstName'},
                                 {title: 'Gender', sortName: 'gender'},
-                                {title: 'Birth Date', sortName: 'birthDate'}
+                                {title: 'Birth Date', sortName: 'birthDate'},
                             ]
                         }
                         setOrderRequest={setOrderRequest}
                         setCurrentPage={setCurrentPage}
                     />
                 </thead>
-                <tbody>
-                {loading && (
-                    <tr>
-                        <td>Chargement ...</td>
-                    </tr>
-                )}
-                {!loading && people.map(person =>
+                {!loading && <tbody>
+
+                {people.map(person =>
                     <tr key={person.id}>
                         <td className="text-center">{person.lastName}</td>
                         <td className="text-center">{person.firstName}</td>
                         <td className="text-center">
-                            {person.gender ? 'M' : 'F'}
+                            {person.gender === 1 ? 'M' : 'F'}
                         </td>
                         <td className="text-center"><Moment format="DD/MM/YYYY">
                             {person.birthDate}
                         </Moment></td>
                         <td>
-                            <button className="btn btn-sm btn-danger" onClick={ () => handleDelete( person.id ) }>Delete</button>
+                            <button className="btn btn-sm btn-danger" onClick={() => handleDelete(person.id)}>Delete
+                            </button>
                         </td>
 
 
@@ -138,7 +142,14 @@ const PeoplePageWithPagination = props => {
                 )}
 
                 </tbody>
+                }
             </table>
+
+            {loading && (
+                <TableLoader/>
+
+            )}
+
 
             {itemsPerPage < totalItems && (
                 <Pagination
@@ -154,4 +165,4 @@ const PeoplePageWithPagination = props => {
     );
 };
 
-export default PeoplePageWithPagination;
+export default PeoplePage;
