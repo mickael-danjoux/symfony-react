@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const Field = ({
+const InputField = ({
 
          name,
          label,
@@ -30,4 +30,4 @@ const Field = ({
     );
 
 
-export default Field;
+export default InputField;

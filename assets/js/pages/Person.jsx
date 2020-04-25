@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import Field from "../components/forms/Fields";
 import {Link} from "react-router-dom";
 import DatePickerField from "../components/forms/DatePickerField";
 import SelectField from "../components/forms/SelectField";
 import DefaultAPI from "../sevices/DefaultAPI";
+import InputField from "../components/forms/InputField";
+import {toast} from "react-toastify";
 
 // import fr from "date-fns/locale/fr"; // the locale you want
 // registerLocale("fr", fr); // register it with the name you want
@@ -34,7 +35,7 @@ const PersonPage = ({match, history}) => {
             setPerson({firstName, lastName, gender, birthDate: new Date(birthDate)});
         } catch (e) {
             console.log(e.response)
-            //TODO : Flash error notification
+            toast.error("Person not found")
             history.replace("/people")
         }
     }
@@ -61,27 +62,26 @@ const PersonPage = ({match, history}) => {
 
     const handleSubmit = async event => {
         event.preventDefault();
-        console.log(person)
+        console.log(editing);
         try {
-            if ( editing ) {
+            if (editing) {
                 await DefaultAPI.put('people', id, person);
-                //TODO : flash success notification
+                toast.success("Person updated")
             } else {
                 await DefaultAPI.post('people', person);
-                //TODO : flash success notification
+                toast.success("Person created")
                 history.replace("/people");
             }
             setErrors({});
-        } catch ({ response }) {
-            const { violations } = response.data;
-            if ( violations ) {
+        } catch ({response}) {
+            const {violations} = response.data;
+            if (violations) {
                 const apiErrors = {};
-                violations.forEach( ({ propertyPath, message }) => {
+                violations.forEach(({propertyPath, message}) => {
                     apiErrors[propertyPath] = message;
                 })
                 setErrors(apiErrors);
-
-                //TODO : flash errors notification
+                toast.error("An error occurred")
             }
         }
     }
@@ -92,7 +92,7 @@ const PersonPage = ({match, history}) => {
 
 
             <form>
-                <Field
+                <InputField
                     name="lastName"
                     label="Last name"
                     placeholder="Enter your last name"
@@ -101,7 +101,7 @@ const PersonPage = ({match, history}) => {
                     error={errors.lastName}
                 />
 
-                <Field
+                <InputField
                     name="firstName"
                     label="First name"
                     placeholder="Enter your first name"
@@ -117,7 +117,11 @@ const PersonPage = ({match, history}) => {
                     value={person.gender}
                     onChange={handleChange}
                     error={errors.gender}
-                />
+                >
+                    <option value="">Choose your gender</option>
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                </SelectField>
 
                 <DatePickerField
                     name="birthDate"

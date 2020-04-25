@@ -1,5 +1,6 @@
 import Axios from "axios";
 import {API_ROUTE} from "../config/api";
+import Cache from "./cache"
 
 
 function findAll(entity, currentPage = null, itemsPerPage = null, orderRequest = null, searchRequest = null){
@@ -40,7 +41,7 @@ function postItem(entity, item){
 
 function putItem(entity, id, item){
     return Axios
-        .post(API_ROUTE + `/${entity}/${id}`, item)
+        .put(API_ROUTE + `/${entity}/${id}`, item)
         .then(response => response.data)
 }
 
@@ -48,5 +49,6 @@ export default {
     findAll,
     findOne,
     delete : deleteItem,
-    post : postItem
+    post : postItem,
+    put : putItem
 }

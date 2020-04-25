@@ -26,6 +26,7 @@ const PeoplePage = props => {
             setTotalItems(data["hydra:totalItems"]);
             setLoading(false);
         } catch (e) {
+            toast.error("Upload data failed")
             console.error(e.message);
         }
     };
@@ -135,6 +136,7 @@ const PeoplePage = props => {
                         <td>
                             <button className="btn btn-sm btn-danger" onClick={() => handleDelete(person.id)}>Delete
                             </button>
+                            <Link to={`/people/${person.id}`} className="btn btn-sm btn-success ml-3">Edit</Link>
                         </td>
 
 

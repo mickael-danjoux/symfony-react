@@ -28,6 +28,6 @@
 .Toastify__toast--success {
     background: rgba(30, 191, 30, 0.98);
 }
-.Toastify__toast-container {
-    margin-top: 7%;
-}
+/*.Toastify__toast-container {*/
+/*    margin-top: 15%;*/
+/*}*/

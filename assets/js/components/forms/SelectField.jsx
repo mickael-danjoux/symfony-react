@@ -7,7 +7,8 @@ const SelectField =
          value = "",
          onChange,
          placeholder,
-         error = ""
+         error = "",
+         children
 
        }) => {
     return (
@@ -21,9 +22,7 @@ const SelectField =
                 value={value}
                 placeholder={placeholder}
             >
-                <option value="">Choose your gender</option>
-                <option value="1">Male</option>
-                <option  value="2">Female</option>
+                {children}
             </select>
             {error && <p className="invalid-feedback ">{error}</p>}
         </div>
