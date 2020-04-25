@@ -9,9 +9,9 @@ import DefaultAPI from "../sevices/DefaultAPI";
 // registerLocale("fr", fr); // register it with the name you want
 
 
-const PersonPage = props => {
+const PersonPage = ({match, history}) => {
 
-    const {id = "new"} = props.match.params;
+    const {id = "new"} = match.params;
     const [person, setPerson] = useState({
         lastName: "",
         firstName: "",
@@ -30,14 +30,12 @@ const PersonPage = props => {
 
     const fetchPerson = async id => {
         try {
-            const data =  await DefaultAPI.findOne('people', id);
-            const { lastName, firstName, gender, birthDate } = data;
-            console.log(birthDate)
-            setPerson({ firstName, lastName, gender, birthDate:new Date(birthDate)});
-            console.log(person.birthDate)
-
+            const {lastName, firstName, gender, birthDate} = await DefaultAPI.findOne('people', id);
+            setPerson({firstName, lastName, gender, birthDate: new Date(birthDate)});
         } catch (e) {
             console.log(e.response)
+            //TODO : Flash error notification
+            history.replace("/people")
         }
     }
 
@@ -65,15 +63,25 @@ const PersonPage = props => {
         event.preventDefault();
         console.log(person)
         try {
-            const response = await DefaultAPI.post('people', person);
+            if ( editing ) {
+                await DefaultAPI.put('people', id, person);
+                //TODO : flash success notification
+            } else {
+                await DefaultAPI.post('people', person);
+                //TODO : flash success notification
+                history.replace("/people");
+            }
             setErrors({});
-        } catch (e) {
-            if (e.response.data.violations) {
+        } catch ({ response }) {
+            const { violations } = response.data;
+            if ( violations ) {
                 const apiErrors = {};
-                e.response.data.violations.forEach(violation => {
-                    apiErrors[violation.propertyPath] = violation.message;
+                violations.forEach( ({ propertyPath, message }) => {
+                    apiErrors[propertyPath] = message;
                 })
                 setErrors(apiErrors);
+
+                //TODO : flash errors notification
             }
         }
     }
@@ -123,7 +131,7 @@ const PersonPage = props => {
 
                 <div className="form-group">
                     <button type="submit" className="btn btn-success" onClick={handleSubmit}>save</button>
-                    <Link to="people" className="btn btn-link">Back to list</Link>
+                    <Link to="/people" className="btn btn-link">Back to list</Link>
                 </div>
 
 

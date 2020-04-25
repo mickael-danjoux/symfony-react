@@ -21,9 +21,9 @@ function findAll(entity, currentPage = null, itemsPerPage = null, orderRequest =
         .then(response => response.data)
 }
 
-function findOne(entity, item){
+function findOne(entity, id){
     return Axios
-        .get(API_ROUTE + `/${entity}/${item}`)
+        .get(API_ROUTE + `/${entity}/${id}`)
         .then(response => response.data)
 }
 
@@ -35,6 +35,12 @@ function deleteItem(entity, id){
 function postItem(entity, item){
     return Axios
         .post(API_ROUTE + `/${entity}`, item)
+        .then(response => response.data)
+}
+
+function putItem(entity, id, item){
+    return Axios
+        .post(API_ROUTE + `/${entity}/${id}`, item)
         .then(response => response.data)
 }
 
