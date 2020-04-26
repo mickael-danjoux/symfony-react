@@ -1,17 +1,22 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
+import AuthAPI from "../sevices/AuthAPI";
+import {NavLink} from "react-router-dom";
+import AuthContext from "../contexts/AuthContext";
 
 
-const Navbar = (props) => {
+const Navbar = ({ history }) => {
 
-    const [active, setActive] = useState('people');
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext)
 
-    const handleClick =  item  => {
-        setActive(item);
+    const handleLogout = event => {
+        event.preventDefault();
+        AuthAPI.logout();
+        setIsAuthenticated(false);
+        history.push('/login');
     }
 
-
     return (<nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a className="navbar-brand" href="#">Symfony React</a>
+        <NavLink className="navbar-brand" to="/">Symfony React</NavLink>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
                 aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -19,22 +24,32 @@ const Navbar = (props) => {
 
         <div className="collapse navbar-collapse" id="navbarColor01">
             <ul className="navbar-nav mr-auto">
-                <li className={"nav-item "  + (active === 'home' && " active") }>
-                    <a className="nav-link" href="#" onClick={()=>handleClick('home')}>Home <span className="sr-only" >(current)</span></a>
+
+                <li className="nav-item ">
+                    <NavLink className="nav-link" to="/people">
+                        People
+                    </NavLink>
                 </li>
-                <li className={"nav-item "  + (active === 'people' && " active") }>
-                    <a className="nav-link" href="#/people" onClick={()=>handleClick('people')}>People</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">Pricing</a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">About</a>
-                </li>
+
+                {!isAuthenticated && (
+                    <>
+                        <li className="nav-item ">
+                            <NavLink className="nav-link" to="/login">
+                                Login
+                            </NavLink>
+                        </li>
+                    </>
+                ) || (
+                    <>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#/logout" onClick={handleLogout}>Logout</a>
+                        </li>
+                    </>
+                )}
             </ul>
 
         </div>
-    </nav> );
+    </nav>);
 };
 
 export default Navbar;

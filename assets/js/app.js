@@ -1,38 +1,49 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Switch, Route} from "react-router-dom";
+import {HashRouter, Switch, Route, withRouter} from "react-router-dom";
 
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css';
 import Navbar from "./components/Navbar";
 import Homepage from "./pages/HomePage";
 import PeoplePage from "./pages/PeopleListPage";
-import PeoplePageWithPagination from "./pages/PeopleListPage";
-import {toast, ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 import PersonPage from "./pages/Person";
+import LoginPage from "./pages/LoginPage";
+import AuthAPI from "./sevices/AuthAPI";
+import AuthContext from "./contexts/AuthContext";
+import PrivateRoute from "./components/PrivateRoute";
 
-// Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
-// import $ from 'jquery';
 
-console.log('Hello Webpack Encore!! Edit me in assets/js/app.js');
+AuthAPI.setup();
 
 const App = () => {
+    const [isAuthenticated, setIsAuthenticated] = useState(
+        AuthAPI.isAuthenticated()
+    );
+
+    const NavBarWithRouter = withRouter(Navbar);
+
     return (
-        <HashRouter>
-            <Navbar/>
-            <main className="container pt-5">
-                <Switch>
-                    <Route path="/people/:id" component={PersonPage} />
-                    <Route path="/people" component={PeoplePage} />
-                    <Route path="/" component={Homepage} />
-
-                </Switch>
-            </main>
-            <ToastContainer />
-        </HashRouter>
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            setIsAuthenticated
+        }}>
+            <HashRouter>
+                <NavBarWithRouter/>
+                <main className="container pt-5">
+                    <Switch>
+                        <Route path="/login" component={LoginPage}/>
+                        <PrivateRoute path="/people/:id" component={PersonPage}/>
+                        <PrivateRoute path="/people" component={PeoplePage}/>
+                        <Route path="/" component={Homepage}/>
+                    </Switch>
+                </main>
+                <ToastContainer/>
+            </HashRouter>
+        </AuthContext.Provider>
     )
-
 };
 
 const rootElement = document.querySelector('#app');
