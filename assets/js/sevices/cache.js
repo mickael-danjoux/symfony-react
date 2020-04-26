@@ -1,5 +1,10 @@
 const cache = {};
 
+/**
+ * Set cache in var
+ * @param key
+ * @param data
+ */
 function set(key, data) {
     cache[key] = {
         data,
@@ -7,6 +12,11 @@ function set(key, data) {
     }
 }
 
+/**
+ * Get cache
+ * @param key
+ * @returns {Promise<unknown>}
+ */
 function get(key) {
     return new Promise((resolve) => {
         resolve(
@@ -17,6 +27,10 @@ function get(key) {
     })
 }
 
+/**
+ * erase cache
+ * @param key
+ */
 function invalidate( key ){
     delete cache[key];
 }

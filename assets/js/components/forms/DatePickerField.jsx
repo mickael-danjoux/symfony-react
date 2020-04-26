@@ -2,7 +2,17 @@ import React from 'react';
 import DatePicker, {registerLocale, setDefaultLocale} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
+/**
+ *
+ * @param name
+ * @param label
+ * @param value
+ * @param onChange
+ * @param placeholder
+ * @param error
+ * @returns {*}
+ * @constructor
+ */
 const DatePickerField =
     ({
          name,

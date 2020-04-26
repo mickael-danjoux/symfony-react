@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * Create Table Header for dataTable sorting
+ * @param items
+ * @param setOrderRequest
+ * @param setCurrentPage
+ * @returns {*}
+ * @constructor
+ */
 const TableHeader = ( { items, setOrderRequest, setCurrentPage }) => {
 
     function handleSort(event,name){

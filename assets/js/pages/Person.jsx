@@ -9,10 +9,21 @@ import {toast} from "react-toastify";
 // import fr from "date-fns/locale/fr"; // the locale you want
 // registerLocale("fr", fr); // register it with the name you want
 
-
+/**
+ * Form to add or edit person
+ * @param match
+ * @param history
+ * @returns {*}
+ * @constructor
+ */
 const PersonPage = ({match, history}) => {
 
+    /**
+     * get url params to know if we are creating or editing a person
+     * @type {string}
+     */
     const {id = "new"} = match.params;
+
     const [person, setPerson] = useState({
         lastName: "",
         firstName: "",
@@ -27,8 +38,16 @@ const PersonPage = ({match, history}) => {
         birthDate: ""
     })
 
+    /**
+     * State to know if we're editing or creating a person
+     */
     const [editing, setEditing] = useState(false);
 
+    /**
+     * Get Person data if we're editing a person
+     * @param id
+     * @returns {Promise<void>}
+     */
     const fetchPerson = async id => {
         try {
             const {lastName, firstName, gender, birthDate} = await DefaultAPI.findOne('people', id);
@@ -40,7 +59,9 @@ const PersonPage = ({match, history}) => {
         }
     }
 
-
+    /**
+     * Set page state
+     */
     useEffect(() => {
         if (id !== "new") {
             setEditing(true);
@@ -49,17 +70,29 @@ const PersonPage = ({match, history}) => {
     }, [id]);
 
 
+    /**
+     * manage person data changing
+     * @param currentTarget
+     */
     const handleChange = ({currentTarget}) => {
         let {name, value} = currentTarget;
         if (name === 'gender') value = parseInt(value)
         setPerson({...person, [name]: value});
     }
 
-
+    /**
+     * Manage datepicker
+     * @param date
+     */
     const handleDateChange = date => {
         setPerson({...person, ['birthDate']: date})
     }
 
+    /**
+     * Submit data for add or edit and manage errors tab and toasts
+     * @param event
+     * @returns {Promise<void>}
+     */
     const handleSubmit = async event => {
         event.preventDefault();
         console.log(editing);
@@ -89,8 +122,6 @@ const PersonPage = ({match, history}) => {
     return (
         <>
             {!editing && <h1>Create a person</h1> || <h1>Editing a person</h1>}
-
-
             <form>
                 <InputField
                     name="lastName"

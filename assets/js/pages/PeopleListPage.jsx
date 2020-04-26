@@ -9,6 +9,12 @@ import {toast} from "react-toastify";
 import TableLoader from "../components/loaders/TableLoader";
 import { Link } from "react-router-dom";
 
+/**
+ * People List with API pagination
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const PeoplePage = props => {
 
     const [people, setPeople] = useState([]);
@@ -18,7 +24,10 @@ const PeoplePage = props => {
     const [itemsPerPage, setItemPerPage] = useState(10);
     const [orderRequest, setOrderRequest] = useState([]);
 
-    // get all people with api request
+    /**
+     * Get data paginated with search and orderBy
+     * @returns {Promise<void>}
+     */
     const fetchPeople = async () => {
         try {
             const data = await DefaultAPI.findAll('people',currentPage, itemsPerPage, orderRequest);
@@ -31,30 +40,36 @@ const PeoplePage = props => {
         }
     };
 
-    // get people on component loading
+    /**
+     * Get data when vars changing
+     */
     useEffect(() => {
        fetchPeople()
     }, [currentPage, itemsPerPage, orderRequest]);
 
-    // manage page changing
+    /**
+     * manage page changing
+     * @param page
+     */
     const handlePageChange = page => {
         setLoading(true);
         setCurrentPage(page);
     };
 
-    // manage item per page
+    /**
+     * manage ittems per page
+     * @param event
+     */
     const handleItemsPerPageChange = event => {
         setCurrentPage(1);
         setItemPerPage(event.currentTarget.value);
     };
 
-    // data paginator not using ajax
-    const paginatedPeople = Pagination.getData(
-        people,
-        currentPage,
-        itemsPerPage
-    );
-
+    /**
+     * Delete person action with confirmation
+     * @param id
+     * @returns {Promise<void>}
+     */
     const handleDelete = async id => {
         const MySwal = withReactContent(Swal)
         MySwal.fire({
@@ -83,9 +98,6 @@ const PeoplePage = props => {
             }
         })
     }
-
-
-
 
     return (
         <>

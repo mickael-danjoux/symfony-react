@@ -1,4 +1,11 @@
 import React from 'react';
+
+/**
+ *
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const Homepage = (props) => {
     return (<div className="jumbotron">
         <h1 className="display-3">Hello, world!</h1>

@@ -15,14 +15,25 @@ import AuthAPI from "./sevices/AuthAPI";
 import AuthContext from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 
-
+/**
+ * Get user's app state
+ */
 AuthAPI.setup();
 
+/**
+ *
+ * @returns {*}
+ * @constructor
+ */
 const App = () => {
+
     const [isAuthenticated, setIsAuthenticated] = useState(
         AuthAPI.isAuthenticated()
     );
 
+    /**
+     * Send props to Navbar component since is not in router switch
+     */
     const NavBarWithRouter = withRouter(Navbar);
 
     return (

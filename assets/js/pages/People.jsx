@@ -4,11 +4,20 @@ import Moment from "react-moment";
 import {API_ROUTE} from "../config/api";
 import Pagination from "../components/Pagination";
 
+/**
+ * People List by loading all data and paginated in react app
+ * @param props
+ * @returns {*}
+ * @constructor
+ */
 const PeoplePage2 = props => {
 
     const [people, setPeople] = useState([]);
     const [currentPage, setCurrentPage ] = useState(1);
 
+    /**
+     * Get all data with ajax request
+     */
     useEffect( () => {
         Axios
             .get(API_ROUTE + '/people')
@@ -18,12 +27,19 @@ const PeoplePage2 = props => {
 
     }, []);
 
+    /**
+     * Change current page
+     * @param page
+     */
     const handlePageChange = page => {
         setCurrentPage(page);
     };
 
-
     const itemsPerPage = 8;
+
+    /**
+     * Get page data from Pagination component
+     */
     const paginatedPeople = Pagination.getData(
         people,
         currentPage,

@@ -1,5 +1,14 @@
 import React from 'react';
 
+/**
+ *
+ * @param currentPage
+ * @param itemsPerPage
+ * @param length
+ * @param onPageChanged
+ * @returns {*}
+ * @constructor
+ */
 const Pagination = ({currentPage, itemsPerPage, length, onPageChanged}) => {
 
     const pagesCount = Math.ceil(length / itemsPerPage);

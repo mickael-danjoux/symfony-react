@@ -3,7 +3,12 @@ import InputField from "../components/forms/InputField";
 import AuthAPI from "../sevices/AuthAPI";
 import AuthContext from "../contexts/AuthContext";
 
-
+/**
+ *
+ * @param history
+ * @returns {*}
+ * @constructor
+ */
 const LoginPage = ({ history }) => {
 
     const { setIsAuthenticated } = useContext(AuthContext)
@@ -15,11 +20,20 @@ const LoginPage = ({ history }) => {
 
     const [error, setError] = useState(false)
 
+    /**
+     * Set credentials
+     * @param currentTarget
+     */
     const handleChange = ({currentTarget}) => {
         const { value, name } = currentTarget;
         setCredentials({...credentials, [name]: value})
     }
 
+    /**
+     * Log in action
+     * @param event
+     * @returns {Promise<void>}
+     */
     const handleSubmit = async event => {
         event.preventDefault();
         try {

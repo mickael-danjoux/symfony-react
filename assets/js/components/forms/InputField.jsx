@@ -1,6 +1,17 @@
 import React from 'react';
 
-
+/**
+ *
+ * @param name
+ * @param label
+ * @param value
+ * @param onChange
+ * @param placeholder
+ * @param type
+ * @param error
+ * @returns {*}
+ * @constructor
+ */
 const InputField = ({
 
          name,

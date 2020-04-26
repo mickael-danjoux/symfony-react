@@ -1,5 +1,17 @@
 import React from 'react';
 
+/**
+ *
+ * @param name
+ * @param label
+ * @param value
+ * @param onChange
+ * @param placeholder
+ * @param error
+ * @param children
+ * @returns {*}
+ * @constructor
+ */
 const SelectField =
     ({
          name,
