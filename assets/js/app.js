@@ -2,7 +2,6 @@ import React, {useState, useContext} from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter, Switch, Route, withRouter} from "react-router-dom";
 
-// any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css';
 import Navbar from "./components/Navbar";
 import Homepage from "./pages/HomePage";
@@ -14,6 +13,7 @@ import LoginPage from "./pages/LoginPage";
 import AuthAPI from "./sevices/AuthAPI";
 import AuthContext from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import LoginRoute from "./components/LoginRoute";
 
 /**
  * Get user's app state
@@ -45,7 +45,7 @@ const App = () => {
                 <NavBarWithRouter/>
                 <main className="container pt-5">
                     <Switch>
-                        <Route path="/login" component={LoginPage}/>
+                        <LoginRoute path="/login" component={LoginPage} redirectPath="/people" />
                         <PrivateRoute path="/people/:id" component={PersonPage}/>
                         <PrivateRoute path="/people" component={PeoplePage}/>
                         <Route path="/" component={Homepage}/>
