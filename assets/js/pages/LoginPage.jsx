@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import InputField from "../components/forms/InputField";
 import AuthAPI from "../sevices/AuthAPI";
 import AuthContext from "../contexts/AuthContext";
+import {toast} from "react-toastify";
 
 /**
  *
@@ -40,6 +41,7 @@ const LoginPage = ({ history }) => {
             await AuthAPI.login(credentials)
             setError(false);
             setIsAuthenticated(true);
+            toast.success("Authenticated !")
             history.replace('/people')
         } catch (e) {
             setError(true);
